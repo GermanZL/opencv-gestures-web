@@ -10,6 +10,22 @@ from pydantic import BaseModel
 import mediapipe as mp
 from gesture_logic import GestureCounter
 
+# arriba:
+import os
+from fastapi.middleware.cors import CORSMiddleware
+
+ALLOWED_ORIGINS = [o.strip() for o in os.getenv("ALLOWED_ORIGINS", "*").split(",")]
+
+app = FastAPI(title="Gestures API", version="1.1")
+app.add_middleware(CORSMiddleware,
+    allow_origins=ALLOWED_ORIGINS, allow_credentials=True,
+    allow_methods=["*"], allow_headers=["*"]
+)
+
+@app.get("/")
+def root():
+    return {"status": "ok"}
+    
 app = FastAPI(title="Gestures API", version="1.0")
 app.add_middleware(
     CORSMiddleware,
