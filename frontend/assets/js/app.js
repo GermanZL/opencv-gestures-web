@@ -18,6 +18,11 @@ const stateEye = document.getElementById('stateEye');
 const stateBrow = document.getElementById('stateBrow');
 const stateMouth = document.getElementById('stateMouth');
 
+// Guardar/recordar URL del backend
+const DEFAULT_SERVER = "https://opencv-gestures-web.onrender.com";
+serverUrlInput.value = localStorage.getItem("serverUrl") || serverUrlInput.value || DEFAULT_SERVER;
+serverUrlInput.addEventListener("change", () => localStorage.setItem("serverUrl", serverUrlInput.value));
+
 async function setupCamera() {
   const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false });
   video.srcObject = stream;
@@ -39,7 +44,7 @@ async function sendFrame() {
   if (!sending) return;
   const b64 = snapshot();
   try {
-    const url = `${serverUrlInput.value.replace(/\/$/, '')}/process`; // <-- fixed backtick
+    const url = `${serverUrlInput.value.replace(/\/$/, '')}/process`;
     const res = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -76,11 +81,10 @@ async function sendFrame() {
 }
 
 btnStart.addEventListener('click', async () => {
-  console.log('Iniciar clic'); // debug
   if (!video.srcObject) await setupCamera();
   sending = true;
   if (timer) clearInterval(timer);
-  timer = setInterval(sendFrame, 200); // estabilidad
+  timer = setInterval(sendFrame, 200);
 });
 
 btnStop.addEventListener('click', () => {
