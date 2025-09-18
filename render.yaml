@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: gestures-api
+    env: python
+    rootDir: server
+    plan: free
+    autoDeploy: true
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: ALLOWED_ORIGINS
+        value: https://<TU_USUARIO>.github.io,https://<TU_USUARIO>.github.io/<TU_REPO>
