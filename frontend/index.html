@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contador de Gestos – OpenCV + FaceMesh</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/css/styles.css">
+</head>
+<body class="bg-light d-flex flex-column min-vh-100">
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+    <div class="container">
+      <a class="navbar-brand fw-semibold" href="#">Contador de Gestos</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div id="nav" class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="#acerca">Acerca</a></li>
+          <li class="nav-item"><a class="nav-link" href="#uso">Uso</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="flex-grow-1 py-4">
+    <div class="container">
+      <div class="row g-4 align-items-start">
+        <div class="col-12 col-lg-6">
+          <div class="card shadow-sm">
+            <div class="card-header bg-white"><strong>Vista de cámara</strong></div>
+            <div class="card-body">
+              <div class="video-wrap">
+                <video id="video" autoplay playsinline></video>
+                <canvas id="overlay"></canvas>
+              </div>
+              <div class="d-flex gap-2 justify-content-center mt-3">
+                <button id="btnStart" class="btn btn-primary">Iniciar</button>
+                <button id="btnStop" class="btn btn-outline-secondary">Detener</button>
+              </div>
+              <p class="small text-muted mt-2 mb-0">Permite el acceso a la cámara. Se envían frames al servidor para análisis.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-6">
+          <div class="card shadow-sm">
+            <div class="card-header bg-white"><strong>Conteo de gestos</strong></div>
+            <div class="card-body">
+              <div class="row text-center g-3">
+                <div class="col-4">
+                  <div class="stat">
+                    <div class="stat-label">Parpadeos</div>
+                    <div id="countBlinks" class="stat-value">0</div>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="stat">
+                    <div class="stat-label">Cejas (alzas)</div>
+                    <div id="countBrows" class="stat-value">0</div>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="stat">
+                    <div class="stat-label">Bocas (aperturas)</div>
+                    <div id="countMouth" class="stat-value">0</div>
+                  </div>
+                </div>
+              </div>
+              <hr>
+              <div class="d-flex flex-wrap gap-2 align-items-center">
+                <span class="badge rounded-pill text-bg-secondary" id="stateEye">Ojos: —</span>
+                <span class="badge rounded-pill text-bg-secondary" id="stateBrow">Cejas: —</span>
+                <span class="badge rounded-pill text-bg-secondary" id="stateMouth">Boca: —</span>
+              </div>
+              <div class="mt-3">
+                <label for="serverUrl" class="form-label">Servidor</label>
+                <input id="serverUrl" type="text" class="form-control" value="http://localhost:8000" />
+              </div>
+            </div>
+          </div>
+
+          <div id="acerca" class="card shadow-sm mt-4">
+            <div class="card-header bg-white"><strong>Acerca</strong></div>
+            <div class="card-body">
+              <p>
+                El backend usa <strong>OpenCV</strong> y <strong>MediaPipe Face Mesh</strong> para detectar puntos faciales y
+                calcular métricas (EAR para ojos, distancia ceja-ojo y apertura de labios). El frontend envía frames con <code>fetch</code> y muestra el conteo.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="mt-auto py-3 bg-dark text-white">
+    <div class="container small d-flex flex-wrap justify-content-between align-items-center">
+      <span>Desarrollado por <strong>Germán Zerón López</strong></span>
+      <span>© <span id="year"></span> – opencv-gestures-web</span>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="./assets/js/app.js"></script>
+</body>
+</html>
