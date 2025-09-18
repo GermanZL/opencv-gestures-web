@@ -1,12 +1,11 @@
 services:
   - type: web
     name: gestures-api
-    env: python
-    rootDir: server
-    plan: free
+    env: docker
+    dockerfilePath: server/Dockerfile
     autoDeploy: true
-    buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn app:app --host 0.0.0.0 --port $PORT
+    plan: free
+    healthCheckPath: /
     envVars:
       - key: ALLOWED_ORIGINS
-        value: https://<TU_USUARIO>.github.io,https://<TU_USUARIO>.github.io/<TU_REPO>
+        value: https://germanzl.github.io,https://germanzl.github.io/opencv-gestures-web
